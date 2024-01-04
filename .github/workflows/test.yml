@@ -80,22 +80,8 @@ jobs:
           name: hero-${{ matrix.short-name }}.zip
           path: ~/upload/hero_${{ matrix.short-name }}
           if-no-files-found: error
-          compression-level: 8
 
-      # - run: |
-      #     set -x
-      #     mkdir -p ~/hero/
-      #     echo 'test' > ~/hero/toupload_${{ matrix.short-name }}.txt
-      #     find  ~/hero
-      # - name: upload hero
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: hero-${{ matrix.short-name }}.zip
-      #     path: ~/hero/toupload_${{ matrix.short-name }}.txt
-      #     if-no-files-found: error
-      #     compression-level: 8
-                  
-  
+
 
   publish-me:
     name: Create GitHub Release
@@ -142,8 +128,7 @@ jobs:
       #       hero-macos-i64.zip
       #       h*
       #       h.*
-          
-
+      # 
       # - name: Run ReleaseMe
       #   id: release
       #   uses: dev-build-deploy/release-me@v0
@@ -156,3 +141,19 @@ jobs:
       #       hero-macos-i64
       # - if: ${{ steps.release.outputs.created }}
       #   run: echo ${{ fromJSON(steps.release.outputs.release).tag_name }}          
+
+
+      # - run: |
+      #     set -x
+      #     mkdir -p ~/hero/
+      #     echo 'test' > ~/hero/toupload_${{ matrix.short-name }}.txt
+      #     find  ~/hero
+      # - name: upload hero
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: hero-${{ matrix.short-name }}.zip
+      #     path: ~/hero/toupload_${{ matrix.short-name }}.txt
+      #     if-no-files-found: error
+      #     compression-level: 8
+                  
+  
