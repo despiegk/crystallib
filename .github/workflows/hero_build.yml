@@ -21,7 +21,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # name: ${{ github.ref }}
-          name: '0.9.7'
+          name: 'latest'
           tag: '0.9.7'
           commit: 'latest'
           draft: true
