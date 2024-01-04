@@ -24,7 +24,7 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref_name }} and your repository is ${{ github.repository }}."
       - run: |
           mkdir -p ${RUNNER_TEMP}/hero/
-          echo 'test' > ${RUNNER_TEMP}/hero/toupload_${matrix.os}.txt
+          echo 'test' > ${RUNNER_TEMP}/hero/toupload_${{ matrix.os }}.txt
       # - name: Install dependencies
       #   run: |
       #     if [ ${{ matrix.os }} == 'ubuntu-latest' ]; then
