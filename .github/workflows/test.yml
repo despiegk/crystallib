@@ -26,64 +26,75 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref_name }} and your repository is ${{ github.repository }}."
-      - run: |
-          set -x
-          mkdir -p ~/hero/
-          echo 'test' > ~/hero/toupload_${{ matrix.short-name }}.txt
-          find  ~/hero
+
+      - name: Install dependencies
+        run: |
+          if [ ${{ matrix.os }} == 'ubuntu-latest' ]; then
+            sudo apt install -y libgc-dev tmux git rsync curl imagemagick redis   
+            sudo systemctl start redis         
+          else
+            brew install libgc tmux git rsync curl redis libpq
+            brew services start redis
+          fi          
+          sleep 2
+          redis-cli ping  
+
+      - name: Setup Vlang
+        uses: vlang/setup-v@v1.3
+        with:
+          check-latest: true
+
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Checkout another repository
+        uses: actions/checkout@v3
+        with:
+          repository: freeflowuniverse/webcomponents
+          path: webcomponents
+
+      - name: Install crystallib
+        run: |
+          mkdir -p ~/.vmodules/freeflowuniverse
+          rm -f ~/.vmodules/freeflowuniverse/crystallib
+          ln -s $(pwd)/crystallib ~/.vmodules/freeflowuniverse/crystallib
+          rm -f ~/.vmodules/freeflowuniverse/webcomponents
+          ln -s $(pwd)/webcomponents/webcomponents ~/.vmodules/freeflowuniverse/webcomponents    
+
+      - name: Build hero
+        run: |
+          pushd cli/hero
+          v -enable-globals -w hero.v
+          chmod +x hero
+          mkdir -p ~/upload
+          mv hero ~/upload/hero_${{ matrix.short-name }}
+          find ~/upload
+          popd
+
+      - name: Extract tag name
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
       - name: upload hero
         uses: actions/upload-artifact@v4
         with:
           name: hero-${{ matrix.short-name }}.zip
-          path: ~/hero/toupload_${{ matrix.short-name }}.txt
+          path: ~/upload/hero_${{ matrix.short-name }}
           if-no-files-found: error
           compression-level: 8
-          
-      # - name: Install dependencies
-      #   run: |
-      #     if [ ${{ matrix.os }} == 'ubuntu-latest' ]; then
-      #       sudo apt install -y libgc-dev tmux git rsync curl imagemagick redis   
-      #       sudo systemctl start redis         
-      #     else
-      #       brew install libgc tmux git rsync curl redis libpq
-      #       brew services start redis
-      #     fi          
-      #     sleep 2
-      #     redis-cli ping  
 
-      # - name: Setup Vlang
-      #   uses: vlang/setup-v@v1.3
+      # - run: |
+      #     set -x
+      #     mkdir -p ~/hero/
+      #     echo 'test' > ~/hero/toupload_${{ matrix.short-name }}.txt
+      #     find  ~/hero
+      # - name: upload hero
+      #   uses: actions/upload-artifact@v4
       #   with:
-      #     check-latest: true
-
-      # - name: Check out repository code
-      #   uses: actions/checkout@v3
-
-      # - name: Checkout another repository
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: freeflowuniverse/webcomponents
-      #     path: webcomponents
-
-      # - name: Install crystallib
-      #   run: |
-      #     mkdir -p ~/.vmodules/freeflowuniverse
-      #     rm -f ~/.vmodules/freeflowuniverse/crystallib
-      #     ln -s $(pwd)/crystallib ~/.vmodules/freeflowuniverse/crystallib
-      #     rm -f ~/.vmodules/freeflowuniverse/webcomponents
-      #     ln -s $(pwd)/webcomponents/webcomponents ~/.vmodules/freeflowuniverse/webcomponents    
-
-      # - name: Build hero
-      #   run: |
-      #     pushd cli/hero
-      #     v -enable-globals -w hero.v
-      #     chmod +x hero
-      #     mv hero hero_${{ matrix.os }}
-      #     find $(pwd)
-      #     popd
-
-      # - name: Extract tag name
-      #   run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      #     name: hero-${{ matrix.short-name }}.zip
+      #     path: ~/hero/toupload_${{ matrix.short-name }}.txt
+      #     if-no-files-found: error
+      #     compression-level: 8
+                  
   
 
   publish-me:
