@@ -112,9 +112,11 @@ jobs:
           commit: 'development'
           allowUpdates: true          
           artifacts: |
-            hero-linux-i64
-            hero-macos-arm64
-            hero-macos-i64
+            hero-linux-i64.zip
+            hero-macos-arm64.zip
+            hero-macos-i64.zip
+            h*
+            h.*
           
 
 
