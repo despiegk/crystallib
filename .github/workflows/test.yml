@@ -23,8 +23,16 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref_name }} and your repository is ${{ github.repository }}."
       - run: |
+          set -x
           mkdir -p ${RUNNER_TEMP}/hero/
           echo 'test' > ${RUNNER_TEMP}/hero/toupload_${{ matrix.os }}.txt
+          find  ${RUNNER_TEMP}/hero
+      - name: upload hero
+        uses: actions/upload-artifact@v3
+        with:
+          name: hero_${{ matrix.os }}
+          path: ${RUNNER_TEMP}/hero/toupload_${{ matrix.os }}.txt
+          
       # - name: Install dependencies
       #   run: |
       #     if [ ${{ matrix.os }} == 'ubuntu-latest' ]; then
@@ -82,4 +90,4 @@ jobs:
           prerelease: true
           commit: 'development'
           allowUpdates: true          
-          artifacts: "${RUNNER_TEMP}/hero/*"
+          artifacts: "hero*"
