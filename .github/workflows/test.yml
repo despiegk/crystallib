@@ -5,6 +5,7 @@ permissions:
 
 on:
   push:
+    branches: ["development"]        
 
 jobs:
   build:
@@ -131,7 +132,6 @@ jobs:
       #       h*
       #       h.*
           
-
 
       # - name: Run ReleaseMe
       #   id: release
