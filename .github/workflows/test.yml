@@ -32,7 +32,7 @@ jobs:
         with:
           name: hero_${{ matrix.os }}
           path: ~/hero/toupload_${{ matrix.os }}.txt
-          if-no-files-found: err
+          if-no-files-found: error
           compression-level: 8
           
       # - name: Install dependencies
