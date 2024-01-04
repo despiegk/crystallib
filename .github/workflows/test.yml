@@ -95,18 +95,18 @@ jobs:
       - name: download hero
         uses: actions/download-artifact@v4
         with:
-          path: ~/download
+          path: download
           pattern: hero-*
           merge-multiple: true          
       - run: |
           set -x
-          find  ~/download
+          find  download
 
       - uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "~/download/*"
+          file: "download/*.zip"
           tags: false
           tag_name: "latest"     
           update_latest_release: true
