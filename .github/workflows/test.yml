@@ -27,6 +27,7 @@ jobs:
           mkdir -p ${RUNNER_TEMP}/hero/
           echo 'test' > ${RUNNER_TEMP}/hero/toupload_${{ matrix.os }}.txt
           find  ${RUNNER_TEMP}/hero
+          echo "${RUNNER_TEMP}/hero"
       - name: upload hero
         uses: actions/upload-artifact@v3
         with:
@@ -78,8 +79,7 @@ jobs:
 
       # - name: Extract tag name
       #   run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-                
-  
+      
       - uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -87,7 +87,7 @@ jobs:
           name: 'latest'
           tag: '0.9.7'
           draft: true
-          prerelease: true
+          prerelease: false
           commit: 'development'
           allowUpdates: true          
           artifacts: "hero*"
