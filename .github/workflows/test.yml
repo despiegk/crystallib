@@ -111,6 +111,7 @@ jobs:
         id: release
         uses: dev-build-deploy/release-me@v0
         with:
+          tag: 0.9.8
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: |
             hero_linux-i64
