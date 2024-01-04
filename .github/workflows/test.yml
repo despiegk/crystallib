@@ -111,7 +111,10 @@ jobs:
           prerelease: true
           commit: 'development'
           allowUpdates: true          
-          artifacts: h*
+          artifacts: |
+            hero-linux-i64
+            hero-macos-arm64
+            hero-macos-i64
           
 
 
