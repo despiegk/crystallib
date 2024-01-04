@@ -22,51 +22,54 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref_name }} and your repository is ${{ github.repository }}."
-      - name: Install dependencies
-        run: |
-          if [ ${{ matrix.os }} == 'ubuntu-latest' ]; then
-            sudo apt install -y libgc-dev tmux git rsync curl imagemagick redis   
-            sudo systemctl start redis         
-          else
-            brew install libgc tmux git rsync curl redis libpq
-            brew services start redis
-          fi          
-          sleep 2
-          redis-cli ping  
+      - run: |
+          mkdir -p ${RUNNER_TEMP}/hero/
+          echo 'test' > ${RUNNER_TEMP}/hero/toupload_${matrix.os}.txt
+      # - name: Install dependencies
+      #   run: |
+      #     if [ ${{ matrix.os }} == 'ubuntu-latest' ]; then
+      #       sudo apt install -y libgc-dev tmux git rsync curl imagemagick redis   
+      #       sudo systemctl start redis         
+      #     else
+      #       brew install libgc tmux git rsync curl redis libpq
+      #       brew services start redis
+      #     fi          
+      #     sleep 2
+      #     redis-cli ping  
 
-      - name: Setup Vlang
-        uses: vlang/setup-v@v1.3
-        with:
-          check-latest: true
+      # - name: Setup Vlang
+      #   uses: vlang/setup-v@v1.3
+      #   with:
+      #     check-latest: true
 
-      - name: Check out repository code
-        uses: actions/checkout@v3
+      # - name: Check out repository code
+      #   uses: actions/checkout@v3
 
-      - name: Checkout another repository
-        uses: actions/checkout@v3
-        with:
-          repository: freeflowuniverse/webcomponents
-          path: webcomponents
+      # - name: Checkout another repository
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: freeflowuniverse/webcomponents
+      #     path: webcomponents
 
-      - name: Install crystallib
-        run: |
-          mkdir -p ~/.vmodules/freeflowuniverse
-          rm -f ~/.vmodules/freeflowuniverse/crystallib
-          ln -s $(pwd)/crystallib ~/.vmodules/freeflowuniverse/crystallib
-          rm -f ~/.vmodules/freeflowuniverse/webcomponents
-          ln -s $(pwd)/webcomponents/webcomponents ~/.vmodules/freeflowuniverse/webcomponents    
+      # - name: Install crystallib
+      #   run: |
+      #     mkdir -p ~/.vmodules/freeflowuniverse
+      #     rm -f ~/.vmodules/freeflowuniverse/crystallib
+      #     ln -s $(pwd)/crystallib ~/.vmodules/freeflowuniverse/crystallib
+      #     rm -f ~/.vmodules/freeflowuniverse/webcomponents
+      #     ln -s $(pwd)/webcomponents/webcomponents ~/.vmodules/freeflowuniverse/webcomponents    
 
-      - name: Build hero
-        run: |
-          pushd cli/hero
-          v -enable-globals -w hero.v
-          chmod +x hero
-          mv hero hero_${{ matrix.os }}
-          find $(pwd)
-          popd
+      # - name: Build hero
+      #   run: |
+      #     pushd cli/hero
+      #     v -enable-globals -w hero.v
+      #     chmod +x hero
+      #     mv hero hero_${{ matrix.os }}
+      #     find $(pwd)
+      #     popd
 
-      - name: Extract tag name
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      # - name: Extract tag name
+      #   run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
                 
   
       - uses: ncipollo/release-action@v1
@@ -79,4 +82,4 @@ jobs:
           prerelease: true
           commit: 'development'
           allowUpdates: true          
-          artifacts: "cli/hero.hero_${{ matrix.os }}"
+          artifacts: "${RUNNER_TEMP}/hero/*"
