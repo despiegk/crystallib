@@ -33,7 +33,7 @@ jobs:
       - name: upload hero
         uses: actions/upload-artifact@v4
         with:
-          name: hero_${{ matrix.short-name }}
+          name: hero-${{ matrix.short-name }}
           path: ~/hero/toupload_${{ matrix.short-name }}.txt
           if-no-files-found: error
           compression-level: 8
@@ -111,6 +111,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ~/download
+          pattern: hero-*
+          merge-multiple: true          
       - run: |
           set -x
           find  ~/download      
@@ -121,8 +123,8 @@ jobs:
           version: 0.9.8
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: |
-            hero_linux-i64
-            hero_macos-arm64
-            hero_macos-i64
-      # - if: ${{ steps.release.outputs.created }}
-      #   run: echo ${{ fromJSON(steps.release.outputs.release).tag_name }}          
+            hero-linux-i64
+            hero-macos-arm64
+            hero-macos-i64
+      - if: ${{ steps.release.outputs.created }}
+        run: echo ${{ fromJSON(steps.release.outputs.release).tag_name }}          
