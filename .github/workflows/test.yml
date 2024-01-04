@@ -84,23 +84,6 @@ jobs:
       # - name: Extract tag name
       #   run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
   
-  # publish:
-  #   needs: build
-  #   permissions:
-  #     contents: write    
-  #   runs-on: ubuntu-latest
-  #   steps:      
-  #     - uses: ncipollo/release-action@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         name: 'latest'
-  #         tag: '0.9.7'
-  #         draft: true
-  #         prerelease: false
-  #         commit: 'development'
-  #         allowUpdates: true          
-  #         artifacts: "hero_linux-i64"
 
   publish-me:
     name: Create GitHub Release
@@ -128,7 +111,7 @@ jobs:
           prerelease: true
           commit: 'development'
           allowUpdates: true          
-          artifacts: u*
+          artifacts: h*
           
 
 
