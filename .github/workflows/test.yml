@@ -24,15 +24,15 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref_name }} and your repository is ${{ github.repository }}."
       - run: |
           set -x
-          mkdir -p ${{ github.workspace }}/hero/
-          echo 'test' > ${{ github.workspace }}/hero/toupload_${{ matrix.os }}.txt
+          mkdir -p ~/hero/
+          echo 'test' > ~/hero/toupload_${{ matrix.os }}.txt
           find  ~/hero
           echo ~/hero"
       - name: upload hero
         uses: actions/upload-artifact@v3
         with:
           name: hero_${{ matrix.os }}.zip
-          path: ${{ github.workspace }}/hero/toupload_${{ matrix.os }}.txt
+          path: ~/hero/toupload_${{ matrix.os }}.txt
           if-no-files-found: err
           compression-level: 6
           
