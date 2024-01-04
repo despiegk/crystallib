@@ -84,18 +84,37 @@ jobs:
       # - name: Extract tag name
       #   run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
   
-  publish:
+  # publish:
+  #   needs: build
+  #   permissions:
+  #     contents: write    
+  #   runs-on: ubuntu-latest
+  #   steps:      
+  #     - uses: ncipollo/release-action@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         name: 'latest'
+  #         tag: '0.9.7'
+  #         draft: true
+  #         prerelease: false
+  #         commit: 'development'
+  #         allowUpdates: true          
+  #         artifacts: "hero_linux-i64"
+
+  publish-me:
+    name: Create GitHub Release
     needs: build
     runs-on: ubuntu-latest
-    steps:      
-      - uses: ncipollo/release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Run ReleaseMe
+        id: release
+        uses: dev-build-deploy/release-me@v0
         with:
-          name: 'latest'
-          tag: '0.9.7'
-          draft: true
-          prerelease: false
-          commit: 'development'
-          allowUpdates: true          
-          artifacts: "hero*"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: |
+            hero_linux-i64
+            hero_macos-arm64
+            hero_macos-i64
+      - if: ${{ steps.release.outputs.created }}
+        run: echo ${{ fromJSON(steps.release.outputs.release).tag_name }}          
