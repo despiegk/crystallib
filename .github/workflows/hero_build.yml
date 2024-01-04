@@ -21,9 +21,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag: '0.9.7'
-          draft: false
-          prerelease: false
-          commit: 'latest'
+          draft: true
+          prerelease: true
+          commit: 'development'
           allowUpdates: true
 
   build-publish:
