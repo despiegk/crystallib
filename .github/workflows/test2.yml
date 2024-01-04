@@ -17,12 +17,10 @@ jobs:
     steps:
       # Create an example file
       - run: echo "Example" > output.txt
-
-      # Upload the output file as a build artifact
       - uses: actions/upload-artifact@v3
-      with:
-        name: output-as-artifact
-        path: output.txt
+        with:
+          name: output-as-artifact
+          path: output.txt
 
       - name: Run ReleaseMe
         id: release
