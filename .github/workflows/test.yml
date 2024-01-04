@@ -128,7 +128,7 @@ jobs:
           prerelease: true
           commit: 'development'
           allowUpdates: true          
-          artifacts: *
+          artifacts: u*
           
 
 
