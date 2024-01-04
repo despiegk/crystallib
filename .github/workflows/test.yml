@@ -100,23 +100,36 @@ jobs:
           merge-multiple: true          
       - run: |
           set -x
-          find  ~/download     
-      - uses: ncipollo/release-action@v1
+          find  ~/download
+
+      - uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: 'latest'
-          tag: '0.9.8'
-          draft: true
-          prerelease: true
-          commit: 'development'
-          allowUpdates: true          
-          artifacts: |
-            hero-linux-i64.zip
-            hero-macos-arm64.zip
-            hero-macos-i64.zip
-            h*
-            h.*
+          file: "~/download/*"
+          tags: false
+          tag_name: "latest"     
+          update_latest_release: true
+          verbose: true
+          default_release_name: "latest"
+          overwrite: true
+
+      # - uses: ncipollo/release-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     name: 'latest'
+      #     tag: '0.9.8'
+      #     draft: true
+      #     prerelease: true
+      #     commit: 'development'
+      #     allowUpdates: true          
+      #     artifacts: |
+      #       hero-linux-i64.zip
+      #       hero-macos-arm64.zip
+      #       hero-macos-i64.zip
+      #       h*
+      #       h.*
           
 
 
