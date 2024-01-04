@@ -106,7 +106,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "download/*.zip"
+          file: "download/*"
           tags: false
           tag_name: "latest"     
           update_latest_release: true
