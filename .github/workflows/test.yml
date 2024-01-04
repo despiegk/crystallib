@@ -105,6 +105,8 @@ jobs:
   publish-me:
     name: Create GitHub Release
     needs: build
+    permissions:
+      contents: write       
     runs-on: ubuntu-latest
     steps:
       - name: download hero
@@ -115,16 +117,30 @@ jobs:
           merge-multiple: true          
       - run: |
           set -x
-          find  ~/download      
-      - name: Run ReleaseMe
-        id: release
-        uses: dev-build-deploy/release-me@v0
+          find  ~/download     
+      - uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version: 0.9.8
-          token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: |
-            hero-linux-i64
-            hero-macos-arm64
-            hero-macos-i64
-      - if: ${{ steps.release.outputs.created }}
-        run: echo ${{ fromJSON(steps.release.outputs.release).tag_name }}          
+          name: 'latest'
+          tag: '0.9.8'
+          draft: true
+          prerelease: true
+          commit: 'development'
+          allowUpdates: true          
+          artifacts: hero-*
+          
+
+
+      # - name: Run ReleaseMe
+      #   id: release
+      #   uses: dev-build-deploy/release-me@v0
+      #   with:
+      #     version: 0.9.8
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     artifacts: |
+      #       hero-linux-i64
+      #       hero-macos-arm64
+      #       hero-macos-i64
+      # - if: ${{ steps.release.outputs.created }}
+      #   run: echo ${{ fromJSON(steps.release.outputs.release).tag_name }}          
