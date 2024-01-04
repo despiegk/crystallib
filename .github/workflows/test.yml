@@ -28,12 +28,12 @@ jobs:
           echo 'test' > ~/hero/toupload_${{ matrix.os }}.txt
           find  ~/hero
       - name: upload hero
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: hero_${{ matrix.os }}.zip
+          name: hero_${{ matrix.os }}
           path: ~/hero/toupload_${{ matrix.os }}.txt
           if-no-files-found: err
-          compression-level: 6
+          compression-level: 8
           
       # - name: Install dependencies
       #   run: |
