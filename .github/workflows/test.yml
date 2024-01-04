@@ -107,6 +107,13 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: download hero
+        uses: actions/download-artifact@v4
+        with:
+          path: ~/download
+      - run: |
+          set -x
+          find  ~/download      
       - name: Run ReleaseMe
         id: release
         uses: dev-build-deploy/release-me@v0
