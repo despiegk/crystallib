@@ -33,7 +33,7 @@ jobs:
       - name: upload hero
         uses: actions/upload-artifact@v4
         with:
-          name: hero-${{ matrix.short-name }}
+          name: hero-${{ matrix.short-name }}.zip
           path: ~/hero/toupload_${{ matrix.short-name }}.txt
           if-no-files-found: error
           compression-level: 8
