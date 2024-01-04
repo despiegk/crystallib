@@ -27,7 +27,6 @@ jobs:
           mkdir -p ~/hero/
           echo 'test' > ~/hero/toupload_${{ matrix.os }}.txt
           find  ~/hero
-          echo ~/hero"
       - name: upload hero
         uses: actions/upload-artifact@v3
         with:
